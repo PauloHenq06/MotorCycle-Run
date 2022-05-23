@@ -1,0 +1,68 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class UIManager : MonoBehaviour
+{
+
+    public int _kmCount, _actualKm, _totalKm;
+
+    string _sceneName;
+        
+    public float _canAlternateKm;
+
+    public Text _kmText;
+
+    
+    // Start is called before the first frame update
+    void Start()
+    {
+        _actualKm = 0;
+        _totalKm = 0;
+        _sceneName = SceneManager.GetActiveScene().name;
+
+        if(PlayerPrefs.HasKey(_sceneName + "KM"))
+        {
+            _totalKm = PlayerPrefs.GetInt(_sceneName + "KM");
+        }
+
+       
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        _actualKm = _kmCount;
+
+        _canAlternateKm -= Time.deltaTime;
+
+        if (_canAlternateKm <= 0)
+        {
+            updateKM();
+            
+        }
+
+       
+    }
+
+    public void updateKM()
+
+    {
+
+        if (_actualKm > _totalKm)
+        {
+            _totalKm = _actualKm;
+            PlayerPrefs.SetInt(_sceneName + "KM", _totalKm);
+        }
+
+        _kmCount += 1;
+        _kmText.text = "Distance:" + _kmCount + "Km";
+        _canAlternateKm = 5;
+        
+    }
+    
+
+   
+}
