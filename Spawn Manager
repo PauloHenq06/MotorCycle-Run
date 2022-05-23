@@ -1,0 +1,46 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SpawnManager : MonoBehaviour
+{
+    private AudioSource _trafficSource;
+
+    public GameObject[] _spawnVehicles;
+    public Transform[] _spawnPoints;
+
+    public float _spawnTimes;
+    public float _canSpawn;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        _canSpawn = _spawnTimes;
+
+        _trafficSource = GetComponent<AudioSource>();
+        _trafficSource.Play();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        _canSpawn -= Time.deltaTime;
+
+        if (_canSpawn <= 0)
+        {
+            SpawnVehicles();
+        }
+
+    }
+
+    private void SpawnVehicles()
+    {
+        int randomVehicle = Random.Range(0, _spawnVehicles.Length);
+        int randomPoint = Random.Range(0, _spawnPoints.Length);
+
+        Instantiate(_spawnVehicles[randomVehicle], _spawnPoints[randomPoint].position, Quaternion.Euler(0f, 0f, 0f));
+        _canSpawn = _spawnTimes;
+    }
+
+    
+}
