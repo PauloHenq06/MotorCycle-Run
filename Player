@@ -1,0 +1,82 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+public class Player : MonoBehaviour
+{
+    private AudioSource _motorSource;
+
+    public float _speed = 5f;
+
+    private int _auxDirecao;
+    public int _lives = 1;
+
+    public GameObject _motoPrefab, _playerCaidoPrefab;
+
+    UIManager _uiManager;
+
+    public string _scene;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        transform.position = new Vector2(0.04f, -3);
+
+        _motorSource = GetComponent<AudioSource>();
+        _motorSource.Play();
+
+        _uiManager = GetComponent<UIManager>();
+
+        
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+        OnMove();
+
+    }
+
+    public void OnMove()
+    {
+        if (_auxDirecao != 0)
+        {
+            transform.Translate(_speed * Time.deltaTime * _auxDirecao, 0, 0);
+        }
+
+        if (transform.position.x > 1.4f)
+        {
+            transform.position = new Vector2(1.4f, transform.position.y);
+
+        }
+        else if (transform.position.x < -1.4f)
+        {
+            transform.position = new Vector2(-1.4f, transform.position.y);
+
+        }
+    }
+
+    public void Damage()
+    {
+        _lives--;
+
+        if (_lives < 1)
+        {
+            Destroy(this.gameObject);
+            Instantiate(_motoPrefab, transform.position, Quaternion.identity);
+            Instantiate(_playerCaidoPrefab, transform.position, Quaternion.identity);
+            SceneManager.LoadScene(_scene);
+        }
+
+       
+    }
+
+    public void moveHorizontal(int direcao)
+    {
+        _auxDirecao = direcao;
+    }
+
+    
+}
