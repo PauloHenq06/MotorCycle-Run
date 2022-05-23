@@ -1,0 +1,30 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Cenario : MonoBehaviour
+{
+    public float _backgroundspeed;
+
+    private AudioSource _musicSource;
+
+    void Start()
+    {
+        _musicSource = GetComponent<AudioSource>();
+        _musicSource.Play();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        MoveBackground();
+
+       
+    }
+
+    private void MoveBackground()
+    {
+        Vector2 deslocamentocenario = new Vector2(0f, Time.time * _backgroundspeed);
+        GetComponent<Renderer>().material.mainTextureOffset = deslocamentocenario;
+    }
+}
